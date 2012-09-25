@@ -2,7 +2,7 @@ package org.melato.android.location;
 
 import java.util.Date;
 
-import org.melato.gpx.Point;
+import org.melato.gps.Point;
 
 import android.location.Location;
 

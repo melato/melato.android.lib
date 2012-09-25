@@ -28,7 +28,7 @@ public class BackgroundAdapter<T> extends ArrayAdapter<T> {
   class RefreshRunnable implements Runnable {
     @Override
     public void run() {
-      Log.i("melato.org", "refresh");
+      //Log.i("melato.org", "refresh");
       notifyDataSetChanged();      
     }    
   }
@@ -53,7 +53,7 @@ public class BackgroundAdapter<T> extends ArrayAdapter<T> {
   @Override
   public T getItem(int position) {
     if ( ! loader.isLoaded(position)) {
-      Log.i("melato.org", "not loaded: " + position );
+      //Log.i("melato.org", "not loaded: " + position );
       synchronized(this) {
         if ( ! isLoading ) {
           isLoading = true;
