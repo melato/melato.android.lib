@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.melato.geometry.gpx.GPXIterators;
 import org.melato.gps.PointTime;
 import org.melato.gpx.GPX;
 import org.melato.gpx.GPXParser;
+import org.melato.gpx.util.GPXIterators;
 import org.melato.log.Log;
 import org.melato.log.PLog;
 
