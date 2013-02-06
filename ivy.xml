@@ -10,7 +10,6 @@
     <dependencies>
         <dependency org="android" name="android" rev="8" conf="compile->default"/>
         <dependency org="org.melato" name="org.melato.gps" rev="latest.integration"/>
-        <dependency org="org.melato" name="org.melato.gpx" rev="latest.integration"/>
         <dependency org="org.melato" name="org.melato.progress" rev="latest.integration"/>
         <dependency org="org.melato" name="org.melato.util" rev="latest.integration"/>
         <dependency org="org.junit" name="junit" rev="4.4" conf="test->default"/>
