@@ -18,8 +18,6 @@
  */
 package org.melato.android.location;
 
-import java.util.Date;
-
 import org.melato.gps.GpsPoint;
 
 import android.location.Location;
@@ -29,7 +27,7 @@ public class Locations {
     if ( loc == null )
       return null;
     GpsPoint p = new GpsPoint( (float) loc.getLatitude(), (float) loc.getLongitude());
-    p.setTime(new Date(loc.getTime()));
+    p.setTime(loc.getTime());
     if ( loc.hasSpeed() ) {
       p.setSpeed(loc.getSpeed());
     }
