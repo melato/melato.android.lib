@@ -41,16 +41,27 @@ public class PropertiesDisplay {
 
   public static String formatProperty( String label, Object value ) {
     String s = (value == null) ? "" : value.toString();
-    return label + ": " + s;
+    if ( label != null && label.length() != 0 ) {
+      s = label + ": " + s;
+    }
+    return s;
   }
   
   public String formatProperty( int labelResourceId, Object value ) {
     return formatProperty( context.getResources().getString(labelResourceId), value);
   }
   
-  static class Item {
+  /** An item is a label and a value. */
+  public static class Item {
+    int   id;
     String label;
     Object value;
+    
+    public Item(Context context, int labelResourceId, Object value ) {
+      this.id = labelResourceId;
+      this.label = context.getResources().getString(labelResourceId);
+      this.value = value;
+    }
     public Item(String label, Object value) {
       super();
       this.label = label;
@@ -59,6 +70,9 @@ public class PropertiesDisplay {
     @Override
     public String toString() {
       return formatProperty(label, value);
+    }
+    public int getId() {
+      return id;
     }
     public String getLabel() {
       return label;
@@ -81,7 +95,7 @@ public class PropertiesDisplay {
     items.add( new Item(label, value));
   }
   public void add( int labelResourceId, Object value ) {
-    items.add( new Item(context.getResources().getString(labelResourceId), value));
+    items.add( new Item(context, labelResourceId, value));
   }
   public void addText( String text ) {
     if ( text == null )
