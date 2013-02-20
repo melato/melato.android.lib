@@ -21,8 +21,13 @@ package org.melato.android.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.melato.android.util.Invokable;
+
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 
 /**
@@ -108,11 +113,41 @@ public class PropertiesDisplay {
   }
   
   class ItemAdapter extends ArrayAdapter<Object> {
+    int normalColorId;
+    int linkColorId;
     public ItemAdapter(int viewResourceId) {
       super(context, viewResourceId, items);
+    }
+    
+    public void setNormalColorId(int normalColorId) {
+      this.normalColorId = normalColorId;
+    }
+
+    public void setLinkColorId(int linkColorId) {
+      this.linkColorId = linkColorId;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+      TextView textView = (TextView) super.getView(position,convertView,parent);
+      if ( normalColorId != 0 && linkColorId != 0) {
+        Object p = items.get(position);
+        if ( p instanceof Invokable ) {
+          textView.setTextColor(context.getResources().getColor(linkColorId));
+        } else {
+          textView.setTextColor(context.getResources().getColor(normalColorId));
+        }
+      }
+      return textView;
     }
   }
   public ArrayAdapter<Object> createAdapter(int listItemId) {
     return new ItemAdapter(listItemId);
+  }
+  public ArrayAdapter<Object> createAdapter(int listItemId, int normalColorId, int linkColorId) {
+    ItemAdapter adapter = new ItemAdapter(listItemId);
+    adapter.setNormalColorId(normalColorId);
+    adapter.setLinkColorId(linkColorId);
+    return adapter;
   }
 }
