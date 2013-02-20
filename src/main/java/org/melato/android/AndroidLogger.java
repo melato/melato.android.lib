@@ -22,12 +22,17 @@ import org.melato.log.Logger;
 
 import android.content.Context;
 
+/** Use to setup android logging like this:
+ * Logger.
+ * @author Alex Athanasopoulos
+ *
+ */
 public class AndroidLogger implements Logger {
   Context context;
   
   public AndroidLogger(Context context) {
     super();
-    this.context = context;
+    this.context = context.getApplicationContext();
   }
   
   @Override
