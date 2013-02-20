@@ -19,8 +19,11 @@
 package org.melato.android.location;
 
 import org.melato.gps.GpsPoint;
+import org.melato.gps.Point2D;
 
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 
 public class Locations {
   public static GpsPoint location2Point(Location loc) {
@@ -35,5 +38,22 @@ public class Locations {
       p.setElevation((float)loc.getAltitude());
     }
     return p;
+  }
+  public static Point2D getGeoUriPoint(Intent intent) {
+    Uri uri = intent.getData();
+    if ( uri == null )
+      return null;
+    String scheme = uri.getScheme();
+    if ( ! "geo".equals(scheme)) {
+      return null;
+    }
+    String value = uri.getSchemeSpecificPart();
+    String[] fields = value.split(",");
+    if ( fields.length == 2 ) {
+      float lat = Float.parseFloat(fields[0]);
+      float lon = Float.parseFloat(fields[1]);
+      return new Point2D(lat,lon);
+    }
+    return null;
   }
 }
