@@ -60,6 +60,8 @@ public abstract class ActivityProgressHandler implements ProgressHandler {
 
   protected abstract void updateUI();
   
+  public void end() {}
+  
   private void update() {
     if ( busy )
       return;

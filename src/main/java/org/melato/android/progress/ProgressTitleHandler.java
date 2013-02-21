@@ -38,6 +38,7 @@ public class ProgressTitleHandler extends ActivityProgressHandler {
   }
   
   /** Restore the activity's original title. */
+  @Override
   public void end() {
     activity.setProgressBarVisibility(false);
     activity.setProgress(10000);
