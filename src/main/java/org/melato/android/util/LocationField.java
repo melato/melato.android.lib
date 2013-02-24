@@ -42,7 +42,7 @@ public class LocationField implements Invokable {
 
   @Override
   public void invoke(Context context) {
-    Uri uri = Uri.parse("geo:" + point.getLat() + "," + point.getLon());
+    Uri uri = Uri.parse("geo:" + point.getLat() + "," + point.getLon() + "?z=15");
     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     context.startActivity(intent);
   }    
