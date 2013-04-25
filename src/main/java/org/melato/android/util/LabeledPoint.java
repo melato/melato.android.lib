@@ -20,42 +20,19 @@ package org.melato.android.util;
 
 import org.melato.gps.Point2D;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-
-// Taken from nosmoke.android
-public class LocationField implements Invokable {
-  protected String label;
-  protected Point2D point;
-  protected String pointLabel;
-  
-  public LocationField(String label, Point2D point) {
+public class LabeledPoint {
+  Point2D point;
+  String label;
+  public LabeledPoint(Point2D point, String label) {
     super();
-    this.label = label;
     this.point = point;
+    this.label = label;
   }
-
-  public LocationField(String label, LabeledPoint p) {
-    this(label, p.getPoint());
-    this.pointLabel = p.getLabel();
+  public Point2D getPoint() {
+    return point;
   }
-
-  @Override
-  public String toString() {
-    return label + ": " + point.getLat() + "," + point.getLon();
+  public String getLabel() {
+    return label;
   }
-
-  @Override
-  public void invoke(Context context) {
-    StringBuilder buf = new StringBuilder("geo:" + point.getLat() + "," + point.getLon() );
-    buf.append("?z=15");
-    if ( pointLabel != null) {
-      buf.append("#");
-      buf.append(pointLabel);
-    }
-    Uri uri = Uri.parse(buf.toString());
-    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-    context.startActivity(intent);
-  }    
 }
+
