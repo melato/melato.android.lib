@@ -18,6 +18,7 @@
  */
 package org.melato.android.db;
 
+
 /** Helper class for defining an SQLite column */
 public class Column {
   public final String name;
@@ -50,5 +51,17 @@ public class Column {
     }
     buf.append( ")" );
     return buf.toString();
+  }
+  public static Column find(Column[] columns, String name) {
+    for(Column column: columns ) {
+      if ( column.name.equals(name)) {
+        return column;
+      }
+    }
+    return null;
+  }
+  /** Generate an add column statement. */
+  public static String addColumnStatement(String table, Column column) {
+    return "ALTER TABLE " + table + " ADD COLUMN " + column.name + " " + column.type + ";";
   }
 }
