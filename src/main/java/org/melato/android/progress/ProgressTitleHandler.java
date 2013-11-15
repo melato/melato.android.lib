@@ -20,7 +20,6 @@ package org.melato.android.progress;
 
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.Window;
 
 /**
