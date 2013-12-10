@@ -146,7 +146,9 @@ public abstract class BaseHomeActivity extends Activity implements OnItemClickLi
       }
     }
   }
-  protected abstract void showHelp(Context context, String target);
+  public void showHelp(Context context, String target) {
+    HelpActivity.showHelp(context, target);
+  }
   protected MenuStorage getMenuStorage() { return null; }
   protected abstract LaunchItem[] getInternalLaunchItems();
   protected boolean checkUpdates() { return true; }
