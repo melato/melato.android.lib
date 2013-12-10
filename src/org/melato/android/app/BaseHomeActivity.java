@@ -83,6 +83,19 @@ public abstract class BaseHomeActivity extends Activity implements OnItemClickLi
       context.startActivity(new Intent(context, activity));      
     }
   }
+  public class HelpItem extends InternalLaunchItem {
+    private String helpName;
+    
+    public HelpItem(int icon, int label, String helpName) {
+      super(icon, label);
+      this.helpName = helpName;
+    }
+
+    public void invoke(Context context) {
+      showHelp(context, helpName);
+    }
+  }
+  
   class MenuLaunchItem implements LaunchItem {
     Drawable drawable;
     Menu menu;
