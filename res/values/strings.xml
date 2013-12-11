@@ -1,7 +1,7 @@
 <resources>
 
     <string name="help">Help</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="update_comment"></string>
