@@ -27,8 +27,6 @@ import org.melato.client.HelpItem;
 import org.melato.client.HelpStorage;
 import org.melato.util.VariableSubstitution;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -42,11 +40,11 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TextView;
 
 /** Displays interlinked help items that are taken from the database. */
-public class HelpActivity extends Activity {
+public class HelpActivity extends FrameworkActivity {
   public static final String KEY_NAME = "help_name";
-  FrameworkApplication app;
 
   HelpItem getHelp() {
+    FrameworkApplication app = getApp();
     if ( app == null )
       return null;
     HelpStorage db = app.getHelpStorage();
@@ -76,6 +74,7 @@ public class HelpActivity extends Activity {
       String text = help.getText();
       VariableSubstitution sub = new VariableSubstitution(
           VariableSubstitution.ANT_PATTERN);
+      FrameworkApplication app = getApp();
       if ( app != null) {
         Map<String, String> vars = app.getApplicationVariables();
         text = sub.substitute(text, vars);
@@ -88,10 +87,6 @@ public class HelpActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Application app = getApplication();
-    if ( app instanceof FrameworkApplication ) {
-      this.app =(FrameworkApplication)app;
-    }
     setContentView(R.layout.help);
     HelpItem help = getHelp();
     if (help != null) {
