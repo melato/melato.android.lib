@@ -59,16 +59,9 @@ public class HomeActivity extends FrameworkActivity implements OnItemClickListen
   public static interface LaunchItem extends Invokable {
     public void init(Button button);
   }
-  public static class InternalLaunchItem implements LaunchItem {
-    Class<? extends Activity> activity;
+  public static abstract class InternalLaunchItem implements LaunchItem {
     int drawable;
     int text;
-    public InternalLaunchItem(Class<? extends Activity> activity, int drawable, int text) {
-      super();
-      this.activity = activity;
-      this.drawable = drawable;
-      this.text = text;
-    }    
     protected InternalLaunchItem(int drawable, int text) {
       super();
       this.drawable = drawable;
@@ -79,14 +72,21 @@ public class HomeActivity extends FrameworkActivity implements OnItemClickListen
       button.setText(text);
       setButtonColors(button);
     }
+  }
+  public static class ActivityLaunchItem extends InternalLaunchItem {
+    Class<? extends Activity> activity;
+    public ActivityLaunchItem(Class<? extends Activity> activity, int drawable, int text) {
+      super(drawable, text);
+      this.activity = activity;
+    }        
     public void invoke(Context context) {
       context.startActivity(new Intent(context, activity));      
     }
   }
-  public static class HelpItem extends InternalLaunchItem {
+  public static class HelpLaunchItem extends InternalLaunchItem {
     private String helpName;
     
-    public HelpItem(int icon, int label, String helpName) {
+    public HelpLaunchItem(int icon, int label, String helpName) {
       super(icon, label);
       this.helpName = helpName;
     }
