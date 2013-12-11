@@ -2,7 +2,7 @@ package org.melato.android.app;
 
 import java.util.Map;
 
-import org.melato.android.app.HomeActivity.LaunchItem;
+import org.melato.android.app.HomeActivity.InternalLaunchItem;
 import org.melato.client.HelpStorage;
 import org.melato.client.MenuStorage;
 import org.melato.update.PortableUpdateManager;
@@ -19,7 +19,7 @@ public interface FrameworkApplication {
   /** Return the menu storage, which provides configurable launch items. */
   MenuStorage getMenuStorage();
   /** Return the built-in menus */
-  LaunchItem[] getInternalLaunchItems();
+  InternalLaunchItem[] getInternalLaunchItems();
   
   /** Return the application variables.  These are substituted in the help system.
    *  aa.  perhaps these could be incorporated in the HelpStorage.
