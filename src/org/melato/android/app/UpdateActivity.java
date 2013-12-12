@@ -54,6 +54,7 @@ public class UpdateActivity extends FrameworkActivity {
   public static final String ACCEPTED_TERMS = "accepted_terms";
   private PortableUpdateManager updateManager;
   private ActivityProgressHandler progress;
+  FrameworkApplication app;
   private enum MessageState {
     TERMS,
     ERROR,    
@@ -101,30 +102,34 @@ public class UpdateActivity extends FrameworkActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    app = getApp();
+    if ( app == null ) {
+      finish();
+      return;
+    }
     if ( ! isConnected(this) ) {
       this.state = MessageState.ERROR;
       showMessage(R.string.need_network);
       return;
     }
-    FrameworkApplication app = getApp();
-    if ( app == null ) {
-      finish();
-      return;
-    }
+    progress = new ProgressTitleHandler(this);
     if ( ! hasAcceptedTerms(this)) {
       int eula = app.getEulaResourceId();
       if ( eula != 0 ) {
         this.state = MessageState.TERMS;
         setTitle(R.string.terms_of_use);
         showMessage(eula);
+        return;
       }
-      return;
     }
-    progress = new ProgressTitleHandler(this);
+    gotoIndex();
+  }
+
+  void gotoIndex() {
     updateManager = app.getUpdateManager();
     new IndexTask().execute();      
   }
-
+  
   /** Called from the update button */
   public void update(View view) {
     Button button = (Button) findViewById(R.id.update);
@@ -149,8 +154,7 @@ public class UpdateActivity extends FrameworkActivity {
       Editor editor = prefs.edit();
       editor.putBoolean(ACCEPTED_TERMS, true);
       editor.commit();
-      finish();
-      startActivity(new Intent(this, UpdateActivity.class));
+      gotoIndex();
     }
   }
 
