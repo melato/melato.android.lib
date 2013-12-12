@@ -25,6 +25,7 @@ import java.util.Map;
 import org.melato.android.R;
 import org.melato.client.HelpItem;
 import org.melato.client.HelpStorage;
+import org.melato.client.NullHelpStorage;
 import org.melato.util.VariableSubstitution;
 
 import android.content.Context;
@@ -48,6 +49,9 @@ public class HelpActivity extends FrameworkActivity {
     if ( app == null )
       return null;
     HelpStorage db = app.getHelpStorage();
+    if ( db == null) {
+      db = new NullHelpStorage();
+    }
     String name = getIntent().getStringExtra(KEY_NAME);
     if (name != null) {
       String lang = getResources().getConfiguration().locale.getLanguage();
