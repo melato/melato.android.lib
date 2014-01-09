@@ -20,4 +20,7 @@ public class SqlBookmark extends Bookmark {
     return super.getObject();
   }
   
+  public void setName(String name) {
+    this.name = name;
+  }
 }

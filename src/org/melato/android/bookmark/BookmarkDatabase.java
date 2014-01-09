@@ -90,6 +90,7 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
   
   public void renameBookmark(Bookmark bookmark, String name) {
     SqlBookmark b = (SqlBookmark)bookmark;
+    b.setName(name);
     SQLiteDatabase db = getWritableDatabase();
     try {
       ContentValues values = new ContentValues();

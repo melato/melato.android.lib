@@ -4,24 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.melato.android.R;
+import org.melato.android.ui.RenameFragment;
+import org.melato.android.ui.RenameHandler;
 import org.melato.client.Bookmark;
 
-import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class BookmarksActivity extends ListActivity {
+public class BookmarksActivity extends FragmentActivity implements OnItemClickListener {
   private BookmarkHandler bookmarkHandler;
   private List<Bookmark> bookmarks;
   private ListView listView;
@@ -45,7 +50,7 @@ public class BookmarksActivity extends ListActivity {
     @Override
     protected void onPostExecute(List<Bookmark> result) {
       bookmarks = result;
-      setListAdapter(adapter = new BookmarkAdapter());
+      listView.setAdapter(adapter = new BookmarkAdapter());
       //setListAdapter(new ArrayAdapter<Bookmark>(BookmarksActivity.this, R.layout.list_item, bookmarks));
       super.onPostExecute(result);
     }    
@@ -68,19 +73,21 @@ public class BookmarksActivity extends ListActivity {
     }
   }
   
+  
+  
   @Override
-  protected void onListItemClick(ListView l, View v, int position, long id) {
-    super.onListItemClick(l, v, position, id);
+  public void onItemClick(AdapterView<?> l, View view, int position, long id) {
     Bookmark bookmark = bookmarks.get(position);
     bookmarkHandler.open(this, bookmark);    
   }
-  
-  
+
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    listView = getListView();
+    setContentView(R.layout.bookmarks);
+    listView = (ListView) findViewById(R.id.listView);
+    listView.setOnItemClickListener(this);
     registerForContextMenu(listView);
     new LoadTask().execute();      
   }
@@ -99,6 +106,31 @@ public class BookmarksActivity extends ListActivity {
     inflater.inflate(R.menu.bookmark_menu, menu);
   }
 
+  class BookmarkRenameHandler implements RenameHandler {
+    private Bookmark bookmark;
+    
+    public BookmarkRenameHandler(Bookmark bookmark) {
+      super();
+      this.bookmark = bookmark;
+    }
+
+    @Override
+    public String getName() {
+      return bookmark.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+      BookmarkDatabase.getInstance(BookmarksActivity.this).renameBookmark(bookmark,name);    
+      adapter.notifyDataSetChanged();
+    }
+  }
+  
+  void renameBookmark(Bookmark bookmark, int position) {
+    FragmentManager f = getSupportFragmentManager();
+    RenameHandler handler = new BookmarkRenameHandler(bookmark);
+    new RenameFragment(handler).show(f, "dialog");
+  }
 
   @Override
   public boolean onContextItemSelected(MenuItem item) {
@@ -112,6 +144,9 @@ public class BookmarksActivity extends ListActivity {
       BookmarkDatabase.getInstance(this).deleteBookmark(bookmark);
       bookmarks.remove(info.position);
       adapter.notifyDataSetChanged();
+      return true;
+    } else if ( itemId == R.id.rename) {
+      renameBookmark(bookmark, info.position);
       return true;
     } else {
       return false;
