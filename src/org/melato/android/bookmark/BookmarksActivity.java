@@ -9,8 +9,13 @@ import org.melato.client.Bookmark;
 import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,7 +23,9 @@ import android.widget.TextView;
 
 public class BookmarksActivity extends ListActivity {
   private BookmarkHandler bookmarkHandler;
-  List<Bookmark> bookmarks;
+  private List<Bookmark> bookmarks;
+  private ListView listView;
+  private ArrayAdapter<Bookmark> adapter;
   
   public BookmarksActivity(BookmarkHandler bookmarkHandler) {
     super();
@@ -38,7 +45,7 @@ public class BookmarksActivity extends ListActivity {
     @Override
     protected void onPostExecute(List<Bookmark> result) {
       bookmarks = result;
-      setListAdapter(new BookmarkAdapter());
+      setListAdapter(adapter = new BookmarkAdapter());
       //setListAdapter(new ArrayAdapter<Bookmark>(BookmarksActivity.this, R.layout.list_item, bookmarks));
       super.onPostExecute(result);
     }    
@@ -67,12 +74,14 @@ public class BookmarksActivity extends ListActivity {
     Bookmark bookmark = bookmarks.get(position);
     bookmarkHandler.open(this, bookmark);    
   }
-
+  
   
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    listView = getListView();
+    registerForContextMenu(listView);
     new LoadTask().execute();      
   }
   
@@ -80,5 +89,37 @@ public class BookmarksActivity extends ListActivity {
   protected void onDestroy() {
     super.onDestroy();
   }
+
+
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v,
+      ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.bookmark_menu, menu);
+  }
+
+
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+    Bookmark bookmark = bookmarks.get(info.position);
+    int itemId = item.getItemId();
+    if ( itemId == R.id.open ) {
+      bookmarkHandler.open(this, bookmark);    
+      return true;
+    } else if ( itemId == R.id.delete) {
+      BookmarkDatabase.getInstance(this).deleteBookmark(bookmark);
+      bookmarks.remove(info.position);
+      adapter.notifyDataSetChanged();
+      return true;
+    } else {
+      return false;
+    }
+  }  
+  
+
+  
+
 
 }
