@@ -31,6 +31,7 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
   private List<Bookmark> bookmarks;
   private ListView listView;
   private ArrayAdapter<Bookmark> adapter;
+  private boolean hasContextMenu = true;
   
   public BookmarksActivity(BookmarkHandler bookmarkHandler) {
     super();
@@ -51,7 +52,6 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     protected void onPostExecute(List<Bookmark> result) {
       bookmarks = result;
       listView.setAdapter(adapter = new BookmarkAdapter());
-      //setListAdapter(new ArrayAdapter<Bookmark>(BookmarksActivity.this, R.layout.list_item, bookmarks));
       super.onPostExecute(result);
     }    
   }
@@ -75,10 +75,20 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
   
   
   
+  protected void setHasContextMenu(boolean hasContextMenu) {
+    this.hasContextMenu = hasContextMenu;
+  }
+  
+  public boolean getHasContextMenu() {
+    return hasContextMenu;
+  }
+
+  protected void open(Bookmark bookmark) {
+    bookmarkHandler.open(this, bookmark);    
+  }
   @Override
   public void onItemClick(AdapterView<?> l, View view, int position, long id) {
-    Bookmark bookmark = bookmarks.get(position);
-    bookmarkHandler.open(this, bookmark);    
+    open(bookmarks.get(position));
   }
 
   /** Called when the activity is first created. */
@@ -88,7 +98,9 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     setContentView(R.layout.bookmarks);
     listView = (ListView) findViewById(R.id.listView);
     listView.setOnItemClickListener(this);
-    registerForContextMenu(listView);
+    if ( hasContextMenu ) {
+      registerForContextMenu(listView);
+    }
     new LoadTask().execute();      
   }
   
@@ -134,11 +146,13 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
 
   @Override
   public boolean onContextItemSelected(MenuItem item) {
+    if ( ! hasContextMenu )
+      return false;
     AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
     Bookmark bookmark = bookmarks.get(info.position);
     int itemId = item.getItemId();
     if ( itemId == R.id.open ) {
-      bookmarkHandler.open(this, bookmark);    
+      open(bookmark);
       return true;
     } else if ( itemId == R.id.delete) {
       BookmarkDatabase.getInstance(this).deleteBookmark(bookmark);
@@ -152,9 +166,4 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
       return false;
     }
   }  
-  
-
-  
-
-
 }
