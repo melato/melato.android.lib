@@ -82,7 +82,7 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
     SQLiteDatabase db = getWritableDatabase();
     try {
       SqlBookmark b = (SqlBookmark)bookmark;
-      deleteBookmark(db, b.id);
+      deleteBookmark(db, b.getId());
     } finally {
       db.close();
     }
@@ -95,7 +95,7 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
     try {
       ContentValues values = new ContentValues();
       values.put(BookmarkColumns.NAME, name);
-      db.update(Bookmarks.TABLE,  values,  Bookmarks._ID + "=?", new String[] {String.valueOf(b.id)});
+      db.update(Bookmarks.TABLE,  values,  Bookmarks._ID + "=?", new String[] {String.valueOf(b.getId())});
     } finally {
       db.close();
     }

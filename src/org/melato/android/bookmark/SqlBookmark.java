@@ -4,7 +4,7 @@ import org.melato.client.Bookmark;
 
 public class SqlBookmark extends Bookmark {
   private BookmarkDatabase db;
-  long id;
+  private long id;
 
   SqlBookmark(BookmarkDatabase db, long id, int type, String name, Object object) {
     super(type, name, object);
@@ -23,4 +23,7 @@ public class SqlBookmark extends Bookmark {
   public void setName(String name) {
     this.name = name;
   }
+  public long getId() {
+    return id;
+  }  
 }
