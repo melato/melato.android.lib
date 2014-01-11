@@ -8,6 +8,7 @@ import org.melato.android.ui.RenameFragment;
 import org.melato.android.ui.RenameHandler;
 import org.melato.client.Bookmark;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -68,7 +69,8 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
       ImageView iconView = (ImageView) view.findViewById(R.id.icon);
       Bookmark bookmark = bookmarks.get(position);
       textView.setText(bookmark.getName());
-      iconView.setImageResource(bookmarkHandler.getTypeIcon(bookmark.getType()));
+      BookmarkType type = bookmarkHandler.getBookmarkType(bookmark.getType());
+      iconView.setImageResource(type.getIcon());
       return view;
     }
   }
@@ -84,7 +86,9 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
   }
 
   protected void open(Bookmark bookmark) {
-    bookmarkHandler.open(this, bookmark);    
+    BookmarkType type = bookmarkHandler.getBookmarkType(bookmark.getType());
+    Intent intent = type.createIntent(this,  bookmark);
+    startActivity(intent);    
   }
   @Override
   public void onItemClick(AdapterView<?> l, View view, int position, long id) {
