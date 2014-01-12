@@ -169,5 +169,6 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     } else {
       return false;
     }
-  }  
+  }
+  
 }
