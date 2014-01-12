@@ -1,7 +1,9 @@
 package org.melato.android.bookmark;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.melato.android.bookmark.BookmarkSchema.BookmarkColumns;
 import org.melato.android.bookmark.BookmarkSchema.Bookmarks;
@@ -125,6 +127,20 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
     try {
       Cursor cursor = db.query( Bookmarks.TABLE, BOOKMARK_COLUMNS, null, null, null, null, Bookmarks.NAME + " ASC");
       readBookmarks(cursor, bookmarks);
+    } finally {
+      db.close();
+    }
+  }
+  
+  public SqlBookmark loadBookmark(long id) {
+    List<Bookmark> bookmarks = new ArrayList<Bookmark>();
+    SQLiteDatabase db = getReadableDB();
+    try {
+      Cursor cursor = db.query( Bookmarks.TABLE, BOOKMARK_COLUMNS,
+          Bookmarks._ID + "=?", new String[] {String.valueOf(id)},
+          null, null, null);
+      readBookmarks(cursor, bookmarks);
+      return bookmarks.size() > 0 ? (SqlBookmark) bookmarks.get(0) : null;
     } finally {
       db.close();
     }
