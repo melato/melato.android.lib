@@ -8,6 +8,7 @@ import org.melato.android.ui.RenameFragment;
 import org.melato.android.ui.RenameHandler;
 import org.melato.client.Bookmark;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -105,9 +106,15 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     if ( hasContextMenu ) {
       registerForContextMenu(listView);
     }
+  }
+    
+  
+  @Override
+  protected void onResume() {
+    super.onResume();
     new LoadTask().execute();      
   }
-  
+
   @Override
   protected void onDestroy() {
     super.onDestroy();
@@ -122,29 +129,42 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     inflater.inflate(R.menu.bookmark_menu, menu);
   }
 
-  class BookmarkRenameHandler implements RenameHandler {
-    private Bookmark bookmark;
-    
-    public BookmarkRenameHandler(Bookmark bookmark) {
+  class RenameBookmarkHandler implements RenameHandler {
+    private Bookmark bookmark;    
+    public RenameBookmarkHandler(Bookmark bookmark) {
       super();
       this.bookmark = bookmark;
     }
-
     @Override
     public String getName() {
       return bookmark.getName();
     }
-
     @Override
     public void setName(String name) {
       BookmarkDatabase.getInstance(BookmarksActivity.this).renameBookmark(bookmark,name);    
       adapter.notifyDataSetChanged();
     }
   }
-  
+  static class SaveBookmarkHandler implements RenameHandler {
+    private Context context;
+    private Bookmark bookmark;    
+    public SaveBookmarkHandler(Context context, Bookmark bookmark) {
+      super();
+      this.context = context;
+      this.bookmark = bookmark;
+    }
+    @Override
+    public String getName() {
+      return bookmark.getName();
+    }
+    @Override
+    public void setName(String name) {
+      BookmarkDatabase.getInstance(context).addBookmark(new Bookmark(bookmark, name));
+    }
+  }
   void renameBookmark(Bookmark bookmark, int position) {
     FragmentManager f = getSupportFragmentManager();
-    RenameHandler handler = new BookmarkRenameHandler(bookmark);
+    RenameHandler handler = new RenameBookmarkHandler(bookmark);
     new RenameFragment(handler).show(f, "dialog");
   }
 
@@ -169,6 +189,15 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     } else {
       return false;
     }
+  }
+  
+  public static void addBookmarkDialog(FragmentActivity activity, Bookmark bookmark) {
+    FragmentManager fm = activity.getSupportFragmentManager();
+    SaveBookmarkHandler name = new SaveBookmarkHandler(activity, bookmark);
+    RenameFragment rename = new RenameFragment(name);
+    rename.setTitle(R.string.add_bookmark);
+    rename.setOk(R.string.save);
+    rename.show(fm, "dialog");
   }
   
 }

@@ -15,7 +15,15 @@ import android.widget.EditText;
 public class RenameFragment extends DialogFragment {
   private RenameHandler handler;
   private EditText textView;
+  private int title = R.string.rename;
+  private int ok = R.string.ok;
   
+  public void setTitle(int title) {
+    this.title = title;
+  }
+  public void setOk(int ok) {
+    this.ok = ok;
+  }
   public RenameFragment(RenameHandler handler) {
     super();
     this.handler = handler;
@@ -28,8 +36,8 @@ public class RenameFragment extends DialogFragment {
       builder.setView(view);
       textView = (EditText) view.findViewById(R.id.text);
       textView.setText(handler.getName());
-      builder.setMessage(R.string.rename);
-      builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+      builder.setMessage(title);
+      builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
                  public void onClick(DialogInterface dialog, int id) {
                    handler.setName(textView.getText().toString());
                  }

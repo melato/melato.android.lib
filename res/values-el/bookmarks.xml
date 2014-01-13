@@ -1,0 +1,9 @@
+<resources>
+    <string name="bookmark">Αγαπημένο</string>
+    <string name="bookmarks">Αγαπημένα</string>
+    <string name="select_bookmark">Επιλογή Αγαπημένου</string>
+    <string name="open">Άνοιγμα</string>
+    <string name="rename">Μετονομασία</string>
+    <string name="delete">Διαγραφή</string>
+    
+</resources>
