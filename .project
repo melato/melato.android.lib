@@ -34,22 +34,22 @@
 		<link>
 			<name>gps</name>
 			<type>2</type>
-			<location>/main/dev/gps/src/main/java</location>
+			<location>/var/opt/dev/gps/src/main/java</location>
 		</link>
 		<link>
 			<name>melato.progress</name>
 			<type>2</type>
-			<location>/main/dev/melato.progress/src/main/java</location>
+			<location>/var/opt/dev/melato.progress/src/main/java</location>
 		</link>
 		<link>
 			<name>melato.util</name>
 			<type>2</type>
-			<location>/main/dev/melato.util/src/main/java</location>
+			<location>/var/opt/dev/melato.util/src/main/java</location>
 		</link>
 		<link>
 			<name>xml</name>
 			<type>2</type>
-			<location>/main/dev/java/xml/src/main/java</location>
+			<location>/var/opt/dev/java/xml/src/main/java</location>
 		</link>
 	</linkedResources>
 </projectDescription>
