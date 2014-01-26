@@ -2,7 +2,9 @@
     <string name="bookmark">Αγαπημένο</string>
     <string name="bookmarks">Αγαπημένα</string>
     <string name="select_bookmark">Επιλογή Αγαπημένου</string>
+    <string name="add_bookmark">Προσθήκη Αγαπημένου</string>
     <string name="open">Άνοιγμα</string>
+    <string name="save">Αποθήκευση</string>
     <string name="rename">Μετονομασία</string>
     <string name="delete">Διαγραφή</string>
     
