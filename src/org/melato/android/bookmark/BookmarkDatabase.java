@@ -171,9 +171,13 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
       Cursor cursor = db.query( Bookmarks.TABLE, columns,
           Bookmarks._ID + "=?", new String[] {String.valueOf(id)},
           null, null, null);
-      if ( cursor.moveToFirst()) {
-        byte[] data = cursor.getBlob(0);
-        return Serialization.read(Object.class, data);
+      try {
+        if ( cursor.moveToFirst()) {
+          byte[] data = cursor.getBlob(0);
+          return Serialization.read(Object.class, data);
+        }
+      } finally {
+        cursor.close();
       }
       return null;
     } finally {
