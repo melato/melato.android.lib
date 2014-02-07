@@ -55,8 +55,6 @@ import android.widget.TextView;
  *
  */
 public class BookmarksActivity extends FragmentActivity implements OnItemClickListener {
-  /** Intent key for an optional int[] of bookmark types to display. */
-  public static final String KEY_BOOKMARK_TYPES = "bookmark.types";
   private BookmarkHandler bookmarkHandler;
   private List<Bookmark> bookmarks;
   private ListView listView;
@@ -163,7 +161,6 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.bookmarks);
-    setVisibleTypes((int[]) getIntent().getSerializableExtra(KEY_BOOKMARK_TYPES));
     listView = (ListView) findViewById(R.id.listView);
     listView.setOnItemClickListener(this);
     if ( hasContextMenu ) {
