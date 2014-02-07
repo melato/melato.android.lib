@@ -19,12 +19,14 @@
 package org.melato.android.bookmark;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.melato.android.R;
 import org.melato.android.ui.RenameFragment;
 import org.melato.android.ui.RenameHandler;
 import org.melato.client.Bookmark;
+import org.melato.util.AbstractCollector;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,25 +48,64 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/** Activity that displays all bookmarks and possibly edit them.
+ *  It has an optional context menu that allows the user to open, rename, or delete a bookmark.
+ *  It opens a bookmark by default when the user clicks on it. 
+ * @author alex
+ *
+ */
 public class BookmarksActivity extends FragmentActivity implements OnItemClickListener {
+  /** Intent key for an optional int[] of bookmark types to display. */
+  public static final String KEY_BOOKMARK_TYPES = "bookmark.types";
   private BookmarkHandler bookmarkHandler;
   private List<Bookmark> bookmarks;
   private ListView listView;
   private ArrayAdapter<Bookmark> adapter;
   private boolean hasContextMenu = true;
+  private int[] visibleTypes = null;
   
   public BookmarksActivity(BookmarkHandler bookmarkHandler) {
     super();
     this.bookmarkHandler = bookmarkHandler;
   }
 
+  class BookmarkFilter extends AbstractCollector<Bookmark> {
+    Collection<Bookmark> result;
+
+    public BookmarkFilter(Collection<Bookmark> result) {
+      super();
+      this.result = result;
+    }
+
+    @Override
+    public boolean add(Bookmark bookmark) {
+      if ( isEnabled(bookmark)) {
+        result.add(bookmark);
+      }
+      return true;
+    }    
+  }
+  
+  protected boolean isEnabled(Bookmark bookmark) {
+    if ( visibleTypes != null) {
+      int type = bookmark.getType();
+      for(int d: visibleTypes) {
+        if ( d == type) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+  
   class LoadTask extends AsyncTask<Void,Void,List<Bookmark>> {
 
     @Override
     protected List<Bookmark> doInBackground(Void... args) {
       List<Bookmark> bookmarks = new ArrayList<Bookmark>();
       BookmarkDatabase db = BookmarkDatabase.getInstance(BookmarksActivity.this);
-      db.loadBookmarks(bookmarks);
+      db.loadBookmarks(new BookmarkFilter(bookmarks));
       return bookmarks;
     }
 
@@ -114,11 +155,15 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
     open(bookmarks.get(position));
   }
 
+  protected void setVisibleTypes(int[] types) {
+    visibleTypes = types;
+  }
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.bookmarks);
+    setVisibleTypes((int[]) getIntent().getSerializableExtra(KEY_BOOKMARK_TYPES));
     listView = (ListView) findViewById(R.id.listView);
     listView.setOnItemClickListener(this);
     if ( hasContextMenu ) {
