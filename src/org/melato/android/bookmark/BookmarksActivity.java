@@ -24,8 +24,9 @@ import java.util.List;
 
 import org.melato.android.R;
 import org.melato.android.ui.RenameFragment;
-import org.melato.android.ui.RenameHandler;
 import org.melato.client.Bookmark;
+import org.melato.client.NameAlreadyExistsException;
+import org.melato.client.RenameHandler;
 import org.melato.util.AbstractCollector;
 
 import android.content.Context;
@@ -218,7 +219,7 @@ public class BookmarksActivity extends FragmentActivity implements OnItemClickLi
       return bookmark.getName();
     }
     @Override
-    public void setName(String name) {
+    public void setName(String name) throws NameAlreadyExistsException {
       BookmarkDatabase.getInstance(context).addBookmark(new Bookmark(bookmark, name));
     }
   }

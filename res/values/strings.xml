@@ -9,5 +9,7 @@
     <string name="update_required">Required Updates</string>
     <string name="need_network">You need to have a network connection in order to download the application database.</string>
     <string name="terms_of_use">Terms of Use</string>
+    <string name="name_exists">Name already exists</string>
+    <string name="please_enter_name">Please enter a name</string>
     
 </resources>

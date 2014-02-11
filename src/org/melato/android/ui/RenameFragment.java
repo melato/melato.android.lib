@@ -19,6 +19,8 @@
 package org.melato.android.ui;
 
 import org.melato.android.R;
+import org.melato.client.NameAlreadyExistsException;
+import org.melato.client.RenameHandler;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,13 +30,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class RenameFragment extends DialogFragment {
+public class RenameFragment extends DialogFragment implements Dialog.OnShowListener, View.OnClickListener {
   private RenameHandler handler;
   private EditText textView;
   private int title = R.string.rename;
   private int ok = R.string.ok;
+  private AlertDialog dialog;
   
   public void setTitle(int title) {
     this.title = title;
@@ -46,6 +51,29 @@ public class RenameFragment extends DialogFragment {
     super();
     this.handler = handler;
   }
+   
+  
+  @Override
+  public void onClick(View v) {
+    String name = textView.getText().toString().trim();
+    if ( name.length() == 0 ) {
+      Toast.makeText(getActivity(), R.string.please_enter_name, Toast.LENGTH_SHORT).show();
+      return;
+    }
+    try {
+      handler.setName(name);
+      dialog.dismiss();
+    } catch (NameAlreadyExistsException e) {
+      Toast.makeText(getActivity(), R.string.name_exists, Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  @Override
+  public void onShow(DialogInterface dialog) {
+    Button button = this.dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+    button.setOnClickListener(this);
+  }
+  
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -55,15 +83,13 @@ public class RenameFragment extends DialogFragment {
       textView = (EditText) view.findViewById(R.id.text);
       textView.setText(handler.getName());
       builder.setMessage(title);
-      builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-                 public void onClick(DialogInterface dialog, int id) {
-                   handler.setName(textView.getText().toString());
-                 }
-             });
+      builder.setPositiveButton(ok, null);
       builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                  public void onClick(DialogInterface dialog, int id) {
                  }
              });
-      return builder.create();
+      dialog = builder.create();
+      dialog.setOnShowListener(this);
+      return dialog;
   }
 }

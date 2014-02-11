@@ -9,5 +9,7 @@
     <string name="available_updates">Διαθέσιμες Ανανεώσεις</string>
     <string name="update_required">Υποχρεωτικές Ανανεώσεις</string>
     <string name="need_network">Απαιτείται σύνδεση δικτύου για να αρχικοποιηθεί η βάση δεδομένων της εφαρμογής.</string>
+    <string name="name_exists">Αυτό το όνομα υπάρχει ήδη</string>
+    <string name="please_enter_name">Ορίστε Όνομα</string>
     
 </resources>

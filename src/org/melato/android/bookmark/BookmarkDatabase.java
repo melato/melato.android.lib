@@ -28,6 +28,7 @@ import org.melato.android.bookmark.BookmarkSchema.Bookmarks;
 import org.melato.android.db.Column;
 import org.melato.client.Bookmark;
 import org.melato.client.BookmarkStorage;
+import org.melato.client.NameAlreadyExistsException;
 import org.melato.client.Serialization;
 
 import android.content.ContentValues;
@@ -82,11 +83,32 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
     return db.insert(Bookmarks.TABLE, null, args);
   }
 
-  public Bookmark addBookmark(Bookmark bookmark) {
+  private boolean bookmarkExists(SQLiteDatabase db, String name, int type) {
+    String[] columns = new String[] { Bookmarks._ID };
+    Cursor cursor = db.query( Bookmarks.TABLE, columns,
+        Bookmarks.NAME + " =? AND " + Bookmarks.TYPE + " =? ", new String[] {
+          name,
+          String.valueOf(type)},
+        null, null, null);
+    try {
+      if ( cursor.moveToFirst()) {
+        return true;
+      }
+    } finally {
+      cursor.close();
+    }
+    return false;
+  }
+  
+  public Bookmark addBookmark(Bookmark bookmark) throws NameAlreadyExistsException {
     SQLiteDatabase db = getWritableDatabase();
     try {
+      String name = bookmark.getName();
+      if ( bookmarkExists(db, name, bookmark.getType())) {
+        throw new NameAlreadyExistsException(name);
+      }
       long id = insertBookmark(db, bookmark);
-      return new SqlBookmark(this, id, bookmark.getType(), bookmark.getName(), bookmark.getObject());
+      return new SqlBookmark(this, id, bookmark.getType(), name, bookmark.getObject());
     } catch(IOException e) {
       return null;
     } finally {
@@ -184,5 +206,5 @@ public class BookmarkDatabase extends SQLiteOpenHelper implements BookmarkStorag
       db.close();
     }
   }
-  
+
 }
