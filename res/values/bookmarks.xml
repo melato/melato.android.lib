@@ -1,6 +1,7 @@
 <resources>
     <string name="bookmark">Bookmark</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="bookmarks_tooltip">Access Bookmarks</string>
     <string name="select_bookmark">Select Bookmark</string>
     <string name="add_bookmark">Add Bookmark</string>
     <string name="open">Open</string>
