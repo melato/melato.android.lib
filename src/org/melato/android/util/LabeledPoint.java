@@ -34,5 +34,12 @@ public class LabeledPoint {
   public String getLabel() {
     return label;
   }
+  public String toString() {
+    if ( label != null) {
+      return label + " (" + point.toString() + ")";
+    } else {
+      return point.toString();
+    }
+  }
 }
 
