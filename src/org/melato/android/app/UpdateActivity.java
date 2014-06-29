@@ -20,7 +20,6 @@ package org.melato.android.app;
 
 import java.util.List;
 
-import org.melato.android.AndroidLogger;
 import org.melato.android.R;
 import org.melato.android.progress.ActivityProgressHandler;
 import org.melato.android.progress.ProgressTitleHandler;
@@ -280,7 +279,6 @@ public class UpdateActivity extends FrameworkActivity {
    * false if it should do nothing and let the UpdateActivity take over.
    **/
   public static boolean checkUpdates(FrameworkActivity activity) {
-    Log.setLogger(new AndroidLogger(activity));
     UpdatesChecker checker = new UpdatesChecker(activity);
     return checker.checkUpdates();
   }
