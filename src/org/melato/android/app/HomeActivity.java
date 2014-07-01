@@ -28,6 +28,7 @@ import org.melato.android.R;
 import org.melato.android.util.Invokable;
 import org.melato.client.Menu;
 import org.melato.client.MenuStorage;
+import org.melato.log.Log;
 import org.melato.util.DateId;
 
 import android.app.Activity;
@@ -166,6 +167,7 @@ public class HomeActivity extends FrameworkActivity implements OnItemClickListen
   @Override
   public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      Log.info(getClass().getName() + " onCreate");
       if ( ! UpdateActivity.checkUpdates(this) ) {
         finish();
         return;
