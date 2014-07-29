@@ -37,6 +37,11 @@
 			<location>/var/opt/dev/gps/src/main/java</location>
 		</link>
 		<link>
+			<name>melato.log</name>
+			<type>2</type>
+			<location>/var/opt/dev/melato.log/src/main/java</location>
+		</link>
+		<link>
 			<name>melato.progress</name>
 			<type>2</type>
 			<location>/var/opt/dev/melato.progress/src/main/java</location>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="gps"/>
+	<classpathentry kind="src" path="melato.log"/>
 	<classpathentry kind="src" path="xml"/>
 	<classpathentry kind="src" path="melato.progress"/>
 	<classpathentry kind="src" path="melato.util"/>
