@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+<string name="bookmarks_tooltip">Доступ в выбранные</string>
+<string name="bookmarks">Bыбранные</string>
+<string name="rename">Πереименовать</string>
+<string name="add_bookmark">Добавить Любимое</string>
+<string name="open">Oткрытие</string>
+<string name="bookmark">Избранное</string>
+<string name="select_bookmark">Избранное</string>
+<string name="save">Xранение</string>
+<string name="delete">даление</string>
+</resources>

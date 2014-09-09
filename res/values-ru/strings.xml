@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+<string name="available_updates">Доступные обновления</string>
+<string name="please_enter_name">Указан имя</string>
+<string name="name_exists">Это имя уже существует</string>
+<string name="update">Oбновление</string>
+<string name="help">Помогите</string>
+<string name="terms_of_use">Правила пользования</string>
+<string name="update_required">Обязательное Обновления</string>
+<string name="ok">OK</string>
+<string name="update_comment"></string>
+<string name="need_network">Сетевое подключение требуется для инициализации базы данных приложения</string>
+<string name="cancel">Oтменен</string>
+</resources>
