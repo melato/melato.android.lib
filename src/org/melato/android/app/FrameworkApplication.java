@@ -32,9 +32,11 @@ import org.melato.update.PortableUpdateManager;
  *
  */
 public interface FrameworkApplication {
-  /** Return the help storage.  Used by the help activity to access help content. */
+  /** Return the help storage.  Used by the help activity to access help content.
+   *  May be null.  */
   HelpStorage getHelpStorage();
-  /** Return the menu storage, which provides configurable launch items. */
+  /** Return the menu storage, which provides configurable launch items.
+   *  May be null. */
   MenuStorage getMenuStorage();
   /** Return the built-in menus */
   InternalLaunchItem[] getInternalLaunchItems();
