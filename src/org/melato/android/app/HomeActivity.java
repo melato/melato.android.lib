@@ -53,7 +53,7 @@ import android.widget.GridView;
 /** Abstract Home Activity.
  * Implements the general functionality of the home screen, without knowing about specific menu items. 
  *  */
-public class HomeActivity extends FrameworkActivity implements OnItemClickListener {
+public class HomeActivity extends Activity implements OnItemClickListener {
   List<LaunchItem> items = new ArrayList<LaunchItem>();
   public static interface LaunchItem extends Invokable {
     public void init(Button button);
@@ -144,7 +144,7 @@ public class HomeActivity extends FrameworkActivity implements OnItemClickListen
     button.setTextColor(Color.WHITE);
   }
   void initMenus() {
-    FrameworkApplication app = getApp();
+    FrameworkApplication app = FrameworkActivity.getApp(this);
     if ( app != null) {
       for( LaunchItem item: app.getInternalLaunchItems() ) {
         items.add(item);

@@ -29,6 +29,7 @@ import org.melato.progress.ProgressGenerator;
 import org.melato.update.PortableUpdateManager;
 import org.melato.update.UpdateFile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /** The activity that performs database updates. */
-public class UpdateActivity extends FrameworkActivity {
+public class UpdateActivity extends Activity {
   public static final String ACCEPTED_TERMS = "accepted_terms";
   private PortableUpdateManager updateManager;
   private ActivityProgressHandler progress;
@@ -99,7 +100,7 @@ public class UpdateActivity extends FrameworkActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    app = getApp();
+    app = FrameworkActivity.getApp(this);
     if ( app == null ) {
       finish();
       return;
@@ -156,7 +157,7 @@ public class UpdateActivity extends FrameworkActivity {
   }
 
   void startMain() {
-    Intent intent = new Intent(this, HomeActivity.class);
+    Intent intent = new Intent(this, app.getMainActivity());
     startActivity(intent);        
   }
   
@@ -222,9 +223,12 @@ public class UpdateActivity extends FrameworkActivity {
     PortableUpdateManager updateManager;
     Context context;
     
-    public UpdatesChecker(FrameworkActivity activity) {
+    public UpdatesChecker(Activity activity) {
       this.context = activity.getApplication();
-      FrameworkApplication app = activity.getApp();
+      FrameworkApplication app = null;
+      if ( this.context instanceof FrameworkApplication ) {
+        app = (FrameworkApplication) this.context;
+      }
       if ( app != null )
         updateManager = app.getUpdateManager();
     }
@@ -278,7 +282,7 @@ public class UpdateActivity extends FrameworkActivity {
    * return true if the application should proceed normally.
    * false if it should do nothing and let the UpdateActivity take over.
    **/
-  public static boolean checkUpdates(FrameworkActivity activity) {
+  public static boolean checkUpdates(Activity activity) {
     UpdatesChecker checker = new UpdatesChecker(activity);
     return checker.checkUpdates();
   }

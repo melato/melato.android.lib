@@ -21,10 +21,7 @@ package org.melato.android.app;
 import android.app.Activity;
 import android.app.Application;
 
-public class FrameworkActivity extends Activity {
-  public FrameworkApplication getApp() {
-    return getApp(this);
-  }
+public class FrameworkActivity {
   public static FrameworkApplication getApp(Activity activity) {
     Application app = activity.getApplication();
     if ( app instanceof FrameworkApplication ) {
