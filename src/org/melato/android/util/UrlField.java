@@ -23,20 +23,30 @@ import android.content.Intent;
 import android.net.Uri;
 
 public class UrlField implements Invokable {
+  private String name;
   private String url;
   
   public UrlField(String url) {
+    this(url, url);
+  }
+  
+  public UrlField(String url, String name) {
     super();
     this.url = url;
+    this.name = name;
   }
   
   public String getUrl() {
     return url;
   }
 
+  public String getName() {
+    return name;
+  }
+
   @Override
   public String toString() {
-    return url;
+    return name;
   }
 
   @Override
