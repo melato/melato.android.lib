@@ -19,6 +19,8 @@
 package org.melato.android.ui;
 
 public interface ListLoader {
+  /** Check if an item is loaded.  This is called in the foreground thread. */
   boolean isLoaded(int position);
+  /** Load an item.  This is called in a background thread. */
   void load(int position);
 }
